@@ -206,6 +206,7 @@ const Map = (props) => {
         objects.push(marker);
       });
 
+      map.setCenter(new kakao.maps.LatLng(from.lat, from.lng));
       let bounds = new kakao.maps.LatLngBounds();
       linePath.forEach((e) => bounds.extend(e));
       map.setBounds(bounds);
