@@ -23,6 +23,8 @@ export default function Input(props) {
           name={props.name}
           type={props.type || "text"}
           placeholder={props.placeholder}
+          onClick={props.onClick ?? (() => {})}
+          value={props.value ?? ""}
         />
       )}
     </style.Input>
