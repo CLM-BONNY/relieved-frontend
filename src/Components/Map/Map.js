@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect } from "react";
+import * as style from "./styles.js";
 
 const { kakao } = window;
 let map;
@@ -164,6 +165,14 @@ const Map = (props) => {
           height: props.title === "안심 귀갓길" ? "70vh" : "90vh",
         }}
       ></div>
+      <style.imgBtn>
+        <img
+          src={process.env.PUBLIC_URL + "/Images/CourierBox/CurrentIcon.svg"}
+          onClick={() => {
+            setPos2MyPos();
+          }}
+        />
+      </style.imgBtn>
     </>
   );
 };
