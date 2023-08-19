@@ -6,7 +6,7 @@ export default function DangerousPlace() {
   return (
     <>
       <Header title="위험 장소 제보" />
-      <Map data={{ type: "dangerous_place" }} />
+      <Map type="dangerous_place" />
     </>
   );
 }
