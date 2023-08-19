@@ -25,19 +25,14 @@ const address2pos = (address) => {
   });
 };
 
-const loadingwindow = new kakao.maps.CustomOverlay({
-  content: `<div style="background-color:white;border-radius:10px;width:150px;text-align:center;padding:3px 5px;">잠시만 기다려주세요.</div>`,
-});
+let loadingwindow;
 const loading = (b) => {
-  if (b) {
-    loadingwindow.setPosition(map.getCenter());
-    loadingwindow.setMap(map);
-    map.setDraggable(false);
-  } else {
-    loadingwindow.setMap(null);
-    map.setDraggable(true);
-  }
+  loadingwindow.setMap(b ? map : null);
+  map.setDraggable(!b);
 };
+
+let gpswindow;
+const gpsloading = (b) => gpswindow.setMap(b ? map : null);
 
 const Map = (props) => {
   const title = "지도";
@@ -45,6 +40,7 @@ const Map = (props) => {
 
   const getMyPos = async () => {
     // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
+    gpsloading(true);
     try {
       let { coords } = await new Promise((res, rej) =>
         navigator.geolocation.getCurrentPosition(res, rej)
@@ -53,6 +49,8 @@ const Map = (props) => {
     } catch (err) {
       console.log(err);
       return { lat: 33.450701, lng: 126.570667 };
+    } finally {
+      gpsloading(false);
     }
   };
 
@@ -69,6 +67,19 @@ const Map = (props) => {
       level: 3,
     };
     map = new kakao.maps.Map(container, options);
+    loadingwindow = new kakao.maps.CustomOverlay({
+      content: `<div style="background-color:white;border-radius:10px;width:150px;text-align:center;padding:3px 5px;">잠시만 기다려주세요.</div>`,
+    });
+    gpswindow = new kakao.maps.CustomOverlay({
+      content: `<div style="background-color:white;border-radius:10px;width:150px;text-align:center;padding:3px 5px;">GPS 로딩중...</div>`,
+    });
+
+    loadingwindow.setPosition(map.getCenter());
+    gpswindow.setPosition(map.getCenter());
+    kakao.maps.event.addListener(map, "center_changed", () => {
+      loadingwindow.setPosition(map.getCenter());
+      gpswindow.setPosition(map.getCenter());
+    });
 
     setPos2MyPos();
 
@@ -135,7 +146,6 @@ const Map = (props) => {
   useEffect(() => {
     if (props.type !== "way_back_home" || !props.from || !props.to) return;
     loading(true);
-    console.log(objects);
     for (let obj of objects) {
       try {
         obj.setMap(null);
