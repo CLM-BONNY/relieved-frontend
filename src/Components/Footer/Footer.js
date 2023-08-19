@@ -1,13 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import * as style from "./styles";
 
 function Footer(props) {
+  const navigate = useNavigate();
+
   return (
     <style.Wrap>
       <style.Menu>
         <style.BtnLink>
           {props.title !== "메인" ? (
-            <img src={process.env.PUBLIC_URL + "/Images/Footer/MainIcon.svg"} />
+            <img
+              src={process.env.PUBLIC_URL + "/Images/Footer/MainIcon.svg"}
+              onClick={() => navigate("/firstPage")}
+            />
           ) : (
             <img
               src={process.env.PUBLIC_URL + "/Images/Footer/SelectMainIcon.svg"}
@@ -20,6 +26,7 @@ function Footer(props) {
               src={
                 process.env.PUBLIC_URL + "/Images/Footer/WayBackHomeIcon.svg"
               }
+              onClick={() => navigate("/wayBackHome")}
             />
           ) : (
             <img
@@ -34,6 +41,7 @@ function Footer(props) {
           {props.title !== "안심 택배함" ? (
             <img
               src={process.env.PUBLIC_URL + "/Images/Footer/CourierBoxIcon.svg"}
+              onClick={() => navigate("/courierBox")}
             />
           ) : (
             <img
@@ -50,6 +58,7 @@ function Footer(props) {
               src={
                 process.env.PUBLIC_URL + "/Images/Footer/DangerousPlaceIcon.svg"
               }
+              onClick={() => navigate("/dangerousPlace")}
             />
           ) : (
             <img
@@ -64,6 +73,7 @@ function Footer(props) {
           {props.title !== "제보하기" ? (
             <img
               src={process.env.PUBLIC_URL + "/Images/Footer/ReportIcon.svg"}
+              onClick={() => navigate("/report")}
             />
           ) : (
             <img
