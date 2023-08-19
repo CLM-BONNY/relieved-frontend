@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Main from "./Pages/FirstPage/FirstPage";
 import WayBackHome from "./Pages/WayBackHome/WayBackHome";
 import CourierBox from "./Pages/CourierBox/CourierBox";
 import DangerousPlace from "./Pages/DangerousPlace/DangerousPlace";
@@ -10,6 +11,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route path="/" element={<Main />} />
           <Route path="/wayBackHome" element={<WayBackHome />} />
           <Route path="/courierBox" element={<CourierBox />} />
           <Route path="/dangerousPlace" element={<DangerousPlace />} />

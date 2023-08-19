@@ -12,7 +12,7 @@ function Footer(props) {
           {props.title !== "메인" ? (
             <img
               src={process.env.PUBLIC_URL + "/Images/Footer/MainIcon.svg"}
-              onClick={() => navigate("/firstPage")}
+              onClick={() => navigate("/")}
             />
           ) : (
             <img
