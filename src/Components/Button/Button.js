@@ -3,7 +3,11 @@ import * as style from "./styles";
 
 export default function Button(props) {
   return (
-    <style.Button width={props.width} height={props.height}>
+    <style.Button
+      width={props.width}
+      height={props.height}
+      fontSize={props.fontSize}
+    >
       {props.btnName ? <span>{props.btnName}</span> : "완료"}
     </style.Button>
   );
