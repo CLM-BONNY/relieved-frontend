@@ -5,9 +5,20 @@
   width: auto;
   position: relative;
   word-break: keep-all;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 #search > div {
   width: 100% !important;
   height: calc(100vh - 140px) !important;
+}
+
+input, textarea, input::placeholder, textarea::placeholder {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
 }

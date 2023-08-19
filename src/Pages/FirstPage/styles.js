@@ -1,44 +1,36 @@
 import styled from "styled-components";
 
 export const wrap = styled.div`
-  position: relative;
-  background-color: #83dcb7;
-  height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  z-index: 0;
-`;
-
-export const header = styled.div`
-  color: #ffffff;
-  padding: 40px 0px 0px 90px;
+  gap: 40px;
+  background-color: #83dcb7;
   width: 100%;
-  height: 60px;
-  font-size: 50px;
-  font-weight: 800;
+  height: 100vh;
+  > span {
+    padding: 40px;
+    color: #ffffff;
+    font-size: 50px;
+    font-weight: 800;
+  }
 `;
-
 export const container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 80px 0px 30px 0px;
 `;
 
 export const icon = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
   img {
-    padding: 20px;
-    background-color: white;
+    padding: 15px;
+    background-color: #ffffff;
     border-radius: 180px;
     width: 75px;
     height: 75px;
   }
-  padding: 24px;
-  gap: 20px;
 `;
 
 export const iconInfo = styled.div`
@@ -47,11 +39,13 @@ export const iconInfo = styled.div`
 `;
 
 export const char = styled.div`
+  width: 100%;
+  height: 50%;
   display: flex;
   align-items: center;
-  margin: 50px;
-  width: 45%;
+  justify-content: center;
   > img {
-    width: 100%;
+    width: 50%;
+    height: 50%;
   }
 `;

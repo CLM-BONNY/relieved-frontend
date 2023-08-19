@@ -25,8 +25,8 @@ export default function Header(props) {
       ) : props.title === "위험 장소 제보" ? (
         <style.ButtonBlock>
           <Button
-            width={"60px"}
-            height={"40px"}
+            width={"70px"}
+            height={"30px"}
             fontSize={"15px"}
             btnName={"제보하기"}
             onClick={() => navigate("/report")}

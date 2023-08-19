@@ -34,5 +34,5 @@ export const ButtonBlock = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 0px;
+  right: 10%;
 `;
