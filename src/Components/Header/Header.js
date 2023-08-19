@@ -1,20 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import * as style from "./styles";
 import Button from "../Button/Button";
 
 export default function Header(props) {
+  const navigate = useNavigate();
+
   return (
     <style.Wrap>
       <img
-        onClick={() =>
-          (
-            props.backOnClick ??
-            (() => {
-              window.history.go(-1);
-            })
-          )()
-        }
         src={process.env.PUBLIC_URL + "/Images/Header/BackIcon.svg"}
+        onClick={() => navigate(-1)}
       />
       <span>{props.title}</span>
       {props.title === "제보하기" ? (
@@ -33,7 +29,7 @@ export default function Header(props) {
             height={"40px"}
             fontSize={"15px"}
             btnName={"제보하기"}
-            onClick={() => (props.buttonOnClick ?? (() => {}))()}
+            onClick={() => navigate("/report")}
           />
         </style.ButtonBlock>
       ) : null}
