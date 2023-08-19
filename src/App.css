@@ -6,3 +6,8 @@
   position: relative;
   word-break: keep-all;
 }
+
+#search > div {
+  width: 100% !important;
+  height: calc(100vh - 140px) !important;
+}
