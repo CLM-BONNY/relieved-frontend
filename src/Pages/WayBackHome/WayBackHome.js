@@ -47,7 +47,7 @@ export default function WayBackHome() {
           value={to}
         />
       </style.location>
-      <Map type="way_back_home" from={from} to={to} />
+      <Map type="way_back_home" from={from} to={to} title={title} />
       <Footer title={title} />
     </>
   );

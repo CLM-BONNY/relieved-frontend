@@ -9,7 +9,7 @@ export default function CourierBox() {
   return (
     <>
       <Header title={title} />
-      <Map type="courier_box" />
+      <Map type="courier_box" title={title}/>
       <style.imgBtn>
         <img
           src={process.env.PUBLIC_URL + "/Images/CourierBox/CurrentIcon.svg"}

@@ -8,7 +8,7 @@ export default function DangerousPlace() {
   return (
     <>
       <Header title={title} />
-      <Map type="dangerous_place" />
+      <Map type="dangerous_place" title={title}/>
       <Footer title={title} />
     </>
   );

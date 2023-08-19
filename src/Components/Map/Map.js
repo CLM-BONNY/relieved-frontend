@@ -161,7 +161,7 @@ const Map = (props) => {
         id="myMap"
         style={{
           width: "100%",
-          height: "100vh",
+          height: props.title === "안심 귀갓길" ? "70vh" : "90vh",
         }}
       ></div>
     </>
