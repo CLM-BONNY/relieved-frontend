@@ -16,4 +16,4 @@ fi
 
 npm i
 npm run build
-sudo mv -f build /var/www/html
+sudo mv -f build/* /var/www/html
