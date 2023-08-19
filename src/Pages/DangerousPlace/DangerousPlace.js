@@ -3,10 +3,10 @@ import Header from "../../Components/Header/Header";
 import Map from "../../Components/Map/Map";
 
 export default function DangerousPlace() {
-  return(
+  return (
     <>
       <Header title="위험 장소 제보" />
-      <Map />
+      <Map data={{ type: "dangerous_place" }} />
     </>
-  )
+  );
 }
