@@ -3,6 +3,7 @@ import * as style from "./styles";
 import Header from "../../Components/Header/Header";
 import Input from "../../Components/Input/Input";
 import Map from "../../Components/Map/Map";
+import Footer from "../../Components/Footer/Footer";
 
 const search = (callback) => {
   let search = new window.daum.Postcode({
@@ -15,12 +16,13 @@ const search = (callback) => {
 };
 
 export default function WayBackHome() {
+  const title = "안심 귀갓길";
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
   return (
     <>
-      <Header title={"안심 귀갓길"} />
+      <Header title={title} />
       <style.location>
         <img
           src={process.env.PUBLIC_URL + "/Images/WayBackHome/DepartIcon.svg"}
@@ -46,6 +48,7 @@ export default function WayBackHome() {
         />
       </style.location>
       <Map type="way_back_home" from={from} to={to} />
+      <Footer title={title} />
     </>
   );
 }

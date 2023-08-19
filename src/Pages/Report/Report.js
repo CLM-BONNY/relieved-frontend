@@ -3,6 +3,7 @@ import * as style from "./styles";
 import Header from "../../Components/Header/Header";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
+import Footer from "../../Components/Footer/Footer";
 
 const getMyPos = async () => {
   // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
@@ -19,6 +20,7 @@ const getMyPos = async () => {
 };
 
 function Write() {
+  const title = "제보하기";
   const address = process.env.REACT_APP_API_ADDRESS;
   let pos;
   getMyPos().then((e) => {
@@ -30,7 +32,7 @@ function Write() {
   return (
     <>
       <Header
-        title={"제보하기"}
+        title={title}
         buttonOnClick={() => {
           if (!pos) {
             alert("위치정보를 가지고 오는 중입니다. 잠시만 기다려주세요.");
@@ -54,6 +56,7 @@ function Write() {
           value={detail}
         />
       </style.Wrap>
+      <Footer title={title} />
     </>
   );
 }
