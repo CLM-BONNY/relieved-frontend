@@ -4,6 +4,7 @@ import * as style from "./styles.js";
 
 const { kakao } = window;
 let map;
+let objects = [];
 
 const address2pos = (address) => {
   return new Promise((resolve, reject) => {
@@ -22,6 +23,20 @@ const address2pos = (address) => {
       }
     });
   });
+};
+
+const loadingwindow = new kakao.maps.CustomOverlay({
+  content: `<div style="background-color:white;border-radius:10px;width:150px;text-align:center;padding:3px 5px;">잠시만 기다려주세요.</div>`,
+});
+const loading = (b) => {
+  if (b) {
+    loadingwindow.setPosition(map.getCenter());
+    loadingwindow.setMap(map);
+    map.setDraggable(false);
+  } else {
+    loadingwindow.setMap(null);
+    map.setDraggable(true);
+  }
 };
 
 const Map = (props) => {
@@ -59,50 +74,74 @@ const Map = (props) => {
 
     switch (props.type) {
       case "dangerous_place":
-        axios.get(`${address}/report`).then((res) => {
-          res.data.forEach((e) => {
-            const marker = new kakao.maps.Marker({
-              map: map,
-              position: new kakao.maps.LatLng(e.lat, e.lng),
+        loading(true);
+        axios
+          .get(`${address}/report`)
+          .then((res) => {
+            res.data.forEach((e) => {
+              const marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(e.lat, e.lng),
+              });
+              const infowindow = new kakao.maps.InfoWindow({
+                content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.detail}</div>`,
+                removable: true,
+              });
+              kakao.maps.event.addListener(marker, "click", function () {
+                infowindow.open(map, marker);
+              });
+              kakao.maps.event.addListener(marker, "mouseover", function () {
+                infowindow.open(map, marker);
+              });
+              kakao.maps.event.addListener(marker, "mouseout", function () {
+                infowindow.close();
+              });
+              marker.setMap(map);
             });
-            const infowindow = new kakao.maps.InfoWindow({
-              content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.detail}</div>`,
-            });
-            kakao.maps.event.addListener(marker, "mouseover", function () {
-              infowindow.open(map, marker);
-            });
-            kakao.maps.event.addListener(marker, "mouseout", function () {
-              infowindow.close();
-            });
-            marker.setMap(map);
-          });
-        });
+          })
+          .finally(() => loading(false));
         break;
       case "courier_box":
-        axios.post(`${address}/mailbox`).then((res) => {
-          res.data.forEach((e) => {
-            const marker = new kakao.maps.Marker({
-              map: map,
-              position: new kakao.maps.LatLng(e.wgsxpt, e.wgsypt),
+        loading(true);
+        axios
+          .post(`${address}/mailbox`)
+          .then((res) => {
+            res.data.forEach((e) => {
+              const marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(e.wgsxpt, e.wgsypt),
+              });
+              const infowindow = new kakao.maps.InfoWindow({
+                content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.ansiminm}</div>`,
+                removable: true,
+              });
+              kakao.maps.event.addListener(marker, "click", function () {
+                infowindow.open(map, marker);
+              });
+              kakao.maps.event.addListener(marker, "mouseover", function () {
+                infowindow.open(map, marker);
+              });
+              kakao.maps.event.addListener(marker, "mouseout", function () {
+                infowindow.close();
+              });
+              marker.setMap(map);
             });
-            const infowindow = new kakao.maps.InfoWindow({
-              content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.ansiminm}</div>`,
-            });
-            kakao.maps.event.addListener(marker, "mouseover", function () {
-              infowindow.open(map, marker);
-            });
-            kakao.maps.event.addListener(marker, "mouseout", function () {
-              infowindow.close();
-            });
-            marker.setMap(map);
-          });
-        });
+          })
+          .finally(() => loading(false));
         break;
     }
   }, []);
 
   useEffect(() => {
     if (props.type !== "way_back_home" || !props.from || !props.to) return;
+    loading(true);
+    console.log(objects);
+    for (let obj of objects) {
+      try {
+        obj.setMap(null);
+      } catch {}
+    }
+    objects = [];
 
     (async () => {
       let from = await address2pos(props.from);
@@ -126,22 +165,26 @@ const Map = (props) => {
         }
       }
 
-      let polyline = new kakao.maps.Polyline({
+      const polyline = new kakao.maps.Polyline({
         path: linePath,
         strokeWeight: 5,
-        strokeColor: "#FFAE00",
+        strokeColor: "#FF0000",
         strokeOpacity: 0.7,
         strokeStyle: "solid",
       });
       polyline.setMap(map);
+      objects.push(polyline);
 
       safe.forEach((e) => {
         const marker = new kakao.maps.Marker({
-          map: map,
           position: new kakao.maps.LatLng(e.latitude, e.longitude),
         });
         const infowindow = new kakao.maps.InfoWindow({
           content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.remark}</div>`,
+          removable: true,
+        });
+        kakao.maps.event.addListener(marker, "click", function () {
+          infowindow.open(map, marker);
         });
         kakao.maps.event.addListener(marker, "mouseover", function () {
           infowindow.open(map, marker);
@@ -149,11 +192,13 @@ const Map = (props) => {
         kakao.maps.event.addListener(marker, "mouseout", function () {
           infowindow.close();
         });
+        marker.setMap(map);
+        objects.push(marker);
       });
 
       console.log(map);
       map.setCenter(new kakao.maps.LatLng(from.lat, from.lng));
-    })();
+    })().finally(() => loading(false));
   }, [props.from, props.to]);
 
   return (
