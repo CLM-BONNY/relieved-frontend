@@ -11,6 +11,7 @@ export default function Input(props) {
       color={props.color || "#808080"}
       padding={props.padding}
       marginBottom={props.marginBottom}
+      onChange={(e) => (props.onChange ?? (() => {}))(e)}
     >
       {props.contentPlaceholder ? (
         <textarea

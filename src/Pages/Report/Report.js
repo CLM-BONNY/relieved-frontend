@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as style from "./styles";
 import Header from "../../Components/Header/Header";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
+
+let pos;
 
 function Write() {
   const title = "제보하기";
@@ -25,14 +27,11 @@ function Write() {
     }
   };
 
-  let pos;
-  useEffect(() => {
-    getMyPos().then((e) => {
-      pos = e;
-    });
-  }, []);
+  getMyPos().then((e) => {
+    pos = e;
+  });
 
-  let detail = "";
+  let [detail, setDetail] = useState("");
 
   return (
     <>
@@ -58,6 +57,7 @@ function Write() {
         <Input
           marginBottom={"15px"}
           contentPlaceholder={"내용을 입력해 주세요"}
+          onChange={(e) => setDetail(e.target.value)}
           value={detail}
         />
       </style.Wrap>
