@@ -1,31 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as style from "./styles";
 import Header from "../../Components/Header/Header";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
 
-const getMyPos = async () => {
-  // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
-  try {
-    let { coords } = await new Promise((res, rej) =>
-      navigator.geolocation.getCurrentPosition(res, rej)
-    );
-    return { lat: coords.latitude, lng: coords.longitude };
-  } catch (err) {
-    console.log(err);
-    alert("위치 정보를 가져올 수 없습니다. 제보 기능을 이용할 수 없습니다.");
-    window.history.go(-1);
-  }
-};
-
 function Write() {
   const title = "제보하기";
   const address = process.env.REACT_APP_API_ADDRESS;
+
+  const navigate = useNavigate();
+  const getMyPos = async () => {
+    // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
+    try {
+      let { coords } = await new Promise((res, rej) =>
+        navigator.geolocation.getCurrentPosition(res, rej)
+      );
+      return { lat: coords.latitude, lng: coords.longitude };
+    } catch (err) {
+      console.log(err);
+      alert("위치 정보를 가져올 수 없습니다. 제보 기능을 이용할 수 없습니다.");
+      navigate("/dangerousPlace");
+    }
+  };
+
   let pos;
-  getMyPos().then((e) => {
-    pos = e;
-  });
+  useEffect(() => {
+    getMyPos().then((e) => {
+      pos = e;
+    });
+  }, []);
 
   let detail = "";
 
@@ -45,7 +50,7 @@ function Write() {
             })
             .then(() => {
               alert("제보가 완료되었습니다.");
-              window.history.go(-1);
+              navigate("/dangerousPlace");
             });
         }}
       />
