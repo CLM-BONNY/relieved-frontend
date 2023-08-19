@@ -15,7 +15,12 @@ export default function Header(props) {
       <span>{props.title}</span>
       {props.title === "제보하기" ? (
         <style.ButtonBlock>
-          <Button width={"50px"} height={"30px"} fontSize={"15px"} />
+          <Button
+            width={"50px"}
+            height={"30px"}
+            fontSize={"15px"}
+            onClick={() => (props.buttonOnClick ?? (() => {}))()}
+          />
         </style.ButtonBlock>
       ) : props.title === "위험 장소 제보" ? (
         <style.ButtonBlock>

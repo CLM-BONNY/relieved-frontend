@@ -7,7 +7,7 @@ export default function Button(props) {
       width={props.width}
       height={props.height}
       fontSize={props.fontSize}
-      onClick={props.onClick}
+      onClick={() => (props.onClick ?? (() => {}))()}
     >
       {props.btnName ? <span>{props.btnName}</span> : "완료"}
     </style.Button>
