@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 
 const { kakao } = window;
+let map;
 
 const address2pos = (address) => {
   return new Promise((resolve, reject) => {
@@ -25,7 +26,25 @@ const address2pos = (address) => {
 const Map = (props) => {
   const title = "지도";
   const address = process.env.REACT_APP_API_ADDRESS;
-  let map;
+
+  const getMyPos = async () => {
+    // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
+    try {
+      let { coords } = await new Promise((res, rej) =>
+        navigator.geolocation.getCurrentPosition(res, rej)
+      );
+      return { lat: coords.latitude, lng: coords.longitude };
+    } catch (err) {
+      console.log(err);
+      return { lat: 33.450701, lng: 126.570667 };
+    }
+  };
+
+  const setPos2MyPos = async () => {
+    // 시간이 조금 걸림. 로딩 화면 띄우면 좋을듯
+    let pos = await getMyPos();
+    map.panTo(new kakao.maps.LatLng(pos.lat, pos.lng));
+  };
 
   useEffect(() => {
     const container = document.getElementById("myMap");
@@ -34,6 +53,8 @@ const Map = (props) => {
       level: 3,
     };
     map = new kakao.maps.Map(container, options);
+
+    setPos2MyPos();
 
     switch (props.type) {
       case "dangerous_place":
@@ -55,6 +76,27 @@ const Map = (props) => {
             marker.setMap(map);
           });
         });
+        break;
+      case "courier_box":
+        axios.post(`${address}/mailbox`).then((res) => {
+          res.data.forEach((e) => {
+            const marker = new kakao.maps.Marker({
+              map: map,
+              position: new kakao.maps.LatLng(e.wgsxpt, e.wgsypt),
+            });
+            const infowindow = new kakao.maps.InfoWindow({
+              content: `<div style="width:150px;text-align:center;padding:6px 0;">${e.ansiminm}</div>`,
+            });
+            kakao.maps.event.addListener(marker, "mouseover", function () {
+              infowindow.open(map, marker);
+            });
+            kakao.maps.event.addListener(marker, "mouseout", function () {
+              infowindow.close();
+            });
+            marker.setMap(map);
+          });
+        });
+        break;
     }
   }, []);
 
@@ -108,6 +150,7 @@ const Map = (props) => {
         });
       });
 
+      console.log(map);
       map.setCenter(new kakao.maps.LatLng(from.lat, from.lng));
     })();
   }, [props.from, props.to]);
